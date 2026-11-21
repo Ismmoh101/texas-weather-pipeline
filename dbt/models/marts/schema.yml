@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: dim_city
+    description: One row per tracked Texas city.
+    columns:
+      - name: city_id
+        tests: [unique, not_null]
+
+  - name: fct_daily_weather
+    description: Daily weather summary per city (Central time days). Built incrementally.
+    columns:
+      - name: city_day_key
+        tests: [unique, not_null]
+      - name: city_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_city')
+              field: city_id
+      - name: weather_date
+        tests: [not_null]
+      - name: hours_observed
+        tests:
+          - accepted_range: {min_value: 1, max_value: 25}
+      - name: total_precip_in
+        tests:
+          - accepted_range: {min_value: 0}
+
+  - name: fct_heat_events
+    description: Consecutive-day stretches with highs of 100°F or more, per city.
+    columns:
+      - name: heat_event_key
+        tests: [unique, not_null]
+      - name: duration_days
+        tests:
+          - accepted_range: {min_value: 1}

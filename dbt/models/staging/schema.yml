@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: stg_weather_hourly
+    description: Hourly weather, renamed and converted to US units and Central time.
+    columns:
+      - name: city_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('cities')
+              field: city_id
+      - name: observed_at_utc
+        tests: [not_null]
+      - name: temp_f
+        tests:
+          - accepted_range: {min_value: -40, max_value: 140}
+      - name: humidity_pct
+        tests:
+          - accepted_range: {min_value: 0, max_value: 100}
+      - name: precip_in
+        tests:
+          - accepted_range: {min_value: 0}

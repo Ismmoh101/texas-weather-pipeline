@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: raw
+    description: Rows loaded by the Python ingestion step (pipeline/run.py).
+    tables:
+      - name: weather_hourly
+        description: One row per city per UTC hour from the Open-Meteo archive API.
+        loaded_at_field: ingested_at
+        freshness:
+          warn_after: {count: 2, period: day}
+          error_after: {count: 7, period: day}
+      - name: pipeline_runs
+        description: Audit log with one row per ingestion run.

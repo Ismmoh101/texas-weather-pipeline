@@ -1,0 +1,3 @@
+# Optional: only needed for --warehouse snowflake / DBT_TARGET=prod
+snowflake-connector-python[pandas]>=3.10
+dbt-snowflake>=1.8
